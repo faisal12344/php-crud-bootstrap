@@ -1,54 +1,45 @@
-<?php require_once "web/header.php"; ?>
+<?php require_once __DIR__ . '/header.php'; ?>
 
-    <div style="text-align: right; margin: 20px 0px 10px;">
-        <a id="btnAddAction" href="index.php?action=attendance-add"><img src="web/image/icon-add.png" />Add Attendance</a>
-    </div>
-    <div id="toys-grid">
-        <table cellpadding="10" cellspacing="1" class="attendance_table">
-            <thead>
-                <tr>
-                    <th><strong>Date</strong></th>
-                    <th><strong>Present</strong></th>
-                    <th><strong>Absent</strong></th>
-                    <th><strong>Action</strong></th>
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3 class="mb-0">Attendance</h3>
+  <a href="index.php?action=attendance-add" class="btn btn-dark">+ Add Attendance</a>
+</div>
 
-                </tr>
-            </thead>
-            <tbody>
-                    <?php
-                    if (! empty($result)) {
-                        foreach ($result as $k => $v) {
-                            ?>
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-dark align-middle">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Present</th>
+        <th>Absent</th>
+        <th style="width:180px">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php if (!empty($result)) { ?>
+        <?php foreach ($result as $row) {
+          $date    = $row['attendance_date'] ?? $row['date'] ?? '';
+          $present = (int)($row['present'] ?? $row['present_count'] ?? $row['presentTotal'] ?? 0);
+          $absent  = (int)($row['absent']  ?? $row['absent_count']  ?? $row['absentTotal']  ?? 0);
+        ?>
           <tr>
-                    <td><?php 
-                    $attendance_date = "";
-                    if(!empty($result[$k]["attendance_date"])) {
-                        $attendance_timestamp = strtotime($result[$k]["attendance_date"]);
-                        $attendance_date = date("m-d-Y", $attendance_timestamp);
-                    }
-                    echo $attendance_date; ?></td>
-                    <td><?php echo $result[$k]["present"]; ?></td>
-                    <td><?php echo $result[$k]["absent"]; ?></td>
-                    <td><a class="btnEditAction"
-                        href="index.php?action=attendance-edit&date=<?php echo $result[$k]["attendance_date"]; ?>">
-                        <img src="web/image/icon-edit.png" />
-                        </a>
-                        <a class="btnDeleteAction" 
-                        href="index.php?action=attendance-delete&date=<?php echo $result[$k]["attendance_date"]; ?>">
-                        <img src="web/image/icon-delete.png" />
-                        </a>
-                    </td>
-                </tr>
-                    <?php
-                        }
-                    }
-                    ?>
-                
-            
-            
-            <tbody>
-        
-        </table>
-    </div>
-</body>
-</html>
+            <td><?= htmlspecialchars($date) ?></td>
+            <td><?= $present ?></td>
+            <td><?= $absent ?></td>
+            <td>
+              <a class="btn btn-sm btn-warning"
+                 href="index.php?action=attendance-edit&date=<?= urlencode($date) ?>">Edit</a>
+              <a class="btn btn-sm btn-danger"
+                 onclick="return confirm('Delete records for this date?')"
+                 href="index.php?action=attendance-delete&date=<?= urlencode($date) ?>">Delete</a>
+            </td>
+          </tr>
+        <?php } ?>
+      <?php } else { ?>
+        <tr><td colspan="4" class="text-center text-muted">No attendance records.</td></tr>
+      <?php } ?>
+    </tbody>
+  </table>
+</div>
+
+<?php require_once __DIR__ . '/footer.php'; ?>

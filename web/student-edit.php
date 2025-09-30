@@ -1,64 +1,35 @@
-<?php require_once "web/header.php"; ?>
+<?php require_once __DIR__ . '/header.php'; ?>
+<?php $row = !empty($result) ? $result[0] : ['name'=>'','roll_number'=>'','dob'=>'','class'=>'']; ?>
 
-<form name="frmAdd" method="post" action="" id="frmAdd"
-    onSubmit="return validate();">
-    <div id="mail-status"></div>
-    <div>
-        <label style="padding-top: 20px;">Name</label> <span
-            id="name-info" class="info"></span><br /> <input type="text"
-            name="name" id="name" class="demoInputBox"
-            value="<?php echo $result[0]["name"]; ?>">
-    </div>
-    <div>
-        <label>Roll Number</label> <span id="roll-number-info"
-            class="info"></span><br /> <input type="text"
-            name="roll_number" id="roll_number" class="demoInputBox"
-            value="<?php echo $result[0]["roll_number"]; ?>">
-    </div>
-    <div>
-        <label>Date of Birth</label> <span id="dob-info" class="info"></span><br />
-        <input type="text" name="dob" id="dob" class="demoInputBox"
-            value="<?php echo $result[0]["dob"]; ?>">
-    </div>
-    <div>
-        <label>Class</label> <span id="class-info" class="info"></span><br />
-        <input type="text" name="class" id="class" class="demoInputBox"
-            value="<?php echo $result[0]["class"]; ?>">
-    </div>
-    <div>
-        <input type="submit" name="add" id="btnSubmit" value="Save" />
-    </div>
-    </div>
-    <script src="https://code.jquery.com/jquery-2.1.1.min.js"
-        type="text/javascript"></script>
-    <script>
-function validate() {
-    var valid = true;   
-    $(".demoInputBox").css('background-color','');
-    $(".info").html('');
-    
-    if(!$("#name").val()) {
-        $("#name-info").html("(required)");
-        $("#name").css('background-color','#FFFFDF');
-        valid = false;
-    }
-    if(!$("#roll_number").val()) {
-        $("#roll-number-info").html("(required)");
-        $("#roll_number").css('background-color','#FFFFDF');
-        valid = false;
-    }
-    if(!$("#dob").val()) {
-        $("#dob-info").html("(required)");
-        $("#dob").css('background-color','#FFFFDF');
-        valid = false;
-    }
-    if(!$("#class").val()) {
-        $("#class-info").html("(required)");
-        $("#class").css('background-color','#FFFFDF');
-        valid = false;
-    }   
-    return valid;
-}
-</script>
-    </body>
-    </html>
+<h3 class="mb-3">Edit Student</h3>
+
+<form method="post" action="" class="card bg-secondary-subtle text-white p-4 shadow-sm">
+  <div class="mb-3">
+    <label class="form-label" for="name">Full Name</label>
+    <input class="form-control" type="text" id="name" name="name"
+           value="<?= htmlspecialchars($row['name']) ?>" required>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label" for="roll_number">Roll Number</label>
+    <input class="form-control" type="number" id="roll_number" name="roll_number"
+           value="<?= htmlspecialchars($row['roll_number']) ?>" required>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label" for="dob">Date of Birth</label>
+    <input class="form-control" type="date" id="dob" name="dob"
+           value="<?= htmlspecialchars($row['dob']) ?>">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label" for="class">Class</label>
+    <input class="form-control" type="text" id="class" name="class"
+           value="<?= htmlspecialchars($row['class']) ?>" required>
+  </div>
+
+  <button class="btn btn-primary" type="submit" name="add">Save</button>
+  <a class="btn btn-outline-light" href="index.php">Cancel</a>
+</form>
+
+<?php require_once __DIR__ . '/footer.php'; ?>
